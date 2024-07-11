@@ -22,7 +22,7 @@ namespace Internship.BLL.Controllers
         }
 
         /// <summary>
-        /// [Get] Метод, создания тега
+        /// [Get] Метод, создания роли
         /// </summary>
         [Route("Role/Create")]
         [Authorize(Roles = "Администратор, Модератор")]
@@ -33,7 +33,7 @@ namespace Internship.BLL.Controllers
         }
 
         /// <summary>
-        /// [Post] Метод, создания тега
+        /// [Post] Метод, создания роли
         /// </summary>
         [Route("Role/Create")]
         [Authorize(Roles = "Администратор, Модератор")]
@@ -54,7 +54,7 @@ namespace Internship.BLL.Controllers
         }
 
         /// <summary>
-        /// [Get] Метод, редактирования тега
+        /// [Get] Метод, редактирования роли
         /// </summary>
         [Route("Role/Edit")]
         [Authorize(Roles = "Администратор, Модератор")]
@@ -66,7 +66,7 @@ namespace Internship.BLL.Controllers
         }
 
         /// <summary>
-        /// [Post] Метод, редактирования тега
+        /// [Post] Метод, редактирования роли
         /// </summary>
         [Route("Role/Edit")]
         [Authorize(Roles = "Администратор, Модератор")]
@@ -87,7 +87,7 @@ namespace Internship.BLL.Controllers
         }
 
         /// <summary>
-        /// [Get] Метод, удаления тега
+        /// [Get] Метод, удаления роли
         /// </summary>
         [Route("Role/Remove")]
         [Authorize(Roles = "Администратор, Модератор")]
@@ -100,7 +100,7 @@ namespace Internship.BLL.Controllers
         }
 
         /// <summary>
-        /// [Post] Метод, удаления тега
+        /// [Post] Метод, удаления роли
         /// </summary>
         [Route("Role/Remove")]
         [Authorize(Roles = "Администратор, Модератор")]
@@ -113,7 +113,7 @@ namespace Internship.BLL.Controllers
         }
 
         /// <summary>
-        /// [Get] Метод, получения всех тегов
+        /// [Get] Метод, получения всех ролей
         /// </summary>
         [Route("Role/GetRoles")]
         [HttpGet]

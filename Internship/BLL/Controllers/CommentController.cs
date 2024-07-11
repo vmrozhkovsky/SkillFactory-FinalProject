@@ -101,5 +101,18 @@ namespace Internship.BLL.Controllers
             await _commentService.RemoveComment(id);
             return RedirectToAction("Index", "Home");
         }
+        
+        /// <summary>
+        /// [Get] Метод, получения всех комментариев
+        /// </summary>
+        [Route("Comment/Get")]
+        [Authorize(Roles = "Администратор, Модератор")]
+        [HttpGet]
+        public async Task<IActionResult> GetComments()
+        {
+            var comments = await _commentService.GetComments();
+
+            return View(comments);
+        }
     }
 }
