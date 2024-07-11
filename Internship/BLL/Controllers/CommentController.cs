@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Internship.BLL.Services.IServices;
 using Internship.DAL.Models.Request.Comments;
+using Internship.DAL.Models.Response.Comments;
 using Internship.DAL.Models.Response.Users;
 using Internship.DAL.Repositories.IRepositories;
 
@@ -113,6 +114,19 @@ namespace Internship.BLL.Controllers
             var comments = await _commentService.GetComments();
 
             return View(comments);
+        }
+        
+        /// <summary>
+        /// [Get] Метод, получения комментария по его id
+        /// </summary>
+        [Route("Comment/Get")]
+        [Authorize(Roles = "Администратор, Модератор")]
+        [HttpGet]
+        public async Task<IActionResult> GetCommentById(Guid id)
+        {
+            var comment = await _commentService.GetCommentById(id);
+
+            return View(comment);
         }
     }
 }

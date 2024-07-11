@@ -13,6 +13,7 @@ namespace Internship.BLL.Services.IServices
         Task<UserEditRequest> EditAccount(Guid id);
         Task RemoveAccount(Guid id);
         Task<List<User>> GetAccounts();
+        Task<User> GetAccountById(Guid id);
         Task LogoutAccount();
     }
 }

@@ -58,5 +58,10 @@ namespace Internship.BLL.Services
         {
             return _commentRepo.GetAllComments().ToList();
         }
+        
+        public async Task<Comment> GetCommentById(Guid id)
+        {
+            return _commentRepo.GetComment(id);
+        }
     }
 }

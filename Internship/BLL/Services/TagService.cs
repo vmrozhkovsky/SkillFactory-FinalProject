@@ -44,5 +44,10 @@ namespace Internship.BLL.Services
         {
             return _repo.GetAllTags().ToList();
         }
+
+        public async Task<Tag> GetTagById(Guid id)
+        {
+            return _repo.GetTag(id);
+        }
     }
 }

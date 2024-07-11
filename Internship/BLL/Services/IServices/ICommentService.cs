@@ -9,5 +9,6 @@ namespace Internship.BLL.Services.IServices
         Task EditComment(CommentEditRequest model);
         Task RemoveComment(Guid id);
         Task<List<Comment>> GetComments();
+        Task<Comment> GetCommentById(Guid id);
     }
 }

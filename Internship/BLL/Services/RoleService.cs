@@ -1,11 +1,8 @@
 ﻿using AutoMapper;
-using Azure;
 using Microsoft.AspNetCore.Identity;
 using Internship.BLL.Services.IServices;
 using Internship.DAL.Models.Request.Roles;
 using Internship.DAL.Models.Response.Roles;
-using Internship.DAL.Models.Response.Tags;
-using System.Data;
 
 namespace Internship.BLL.Services
 {

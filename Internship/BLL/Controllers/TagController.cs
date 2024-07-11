@@ -123,5 +123,18 @@ namespace Internship.BLL.Controllers
             var tags = await _tagService.GetTags();
             return View(tags);
         }
+        
+        /// <summary>
+        /// [Get] Метод, получения тега по его id
+        /// </summary>
+        [Route("Comment/Get")]
+        [Authorize(Roles = "Администратор, Модератор")]
+        [HttpGet]
+        public async Task<IActionResult> GetCommentById(Guid id)
+        {
+            var tag = await _tagService.GetTagById(id);
+
+            return View(tag);
+        }
     }
 }

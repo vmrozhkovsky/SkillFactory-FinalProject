@@ -182,5 +182,18 @@ namespace Internship.BLL.Controllers
 
             return View(users);
         }
+        
+        /// <summary>
+        /// [Get] Метод, получения всех пользователей
+        /// </summary>
+        [Route("Account/Get")]
+        [Authorize(Roles = "Администратор, Модератор")]
+        [HttpGet]
+        public async Task<IActionResult> GetAccountById(Guid id)
+        {
+            var user = await _accountService.GetAccountById(id);
+
+            return View(user);
+        }
     }
 }

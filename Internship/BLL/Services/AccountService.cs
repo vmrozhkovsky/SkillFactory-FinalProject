@@ -145,6 +145,12 @@ namespace Internship.BLL.Services
 
             return accounts;
         }
+        
+        public async Task<User> GetAccountById(Guid id)
+        {
+            var user = await _userManager.FindByIdAsync(id.ToString());
+            return user;
+        }
 
         public async Task LogoutAccount()
         {

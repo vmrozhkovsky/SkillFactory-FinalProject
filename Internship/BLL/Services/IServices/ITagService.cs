@@ -9,5 +9,6 @@ namespace Internship.BLL.Services.IServices
         Task EditTag(TagEditRequest model);
         Task RemoveTag(Guid id);
         Task<List<Tag>> GetTags();
+        Task<Tag> GetTagById(Guid id);
     }
 }
