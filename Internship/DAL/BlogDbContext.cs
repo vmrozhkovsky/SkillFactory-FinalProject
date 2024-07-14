@@ -17,6 +17,7 @@ namespace Internship.DAL
 
         public BlogDbContext(DbContextOptions<BlogDbContext> options) : base(options)
         {
+            //Database.EnsureDeleted();
             Database.EnsureCreated();
         }
     }

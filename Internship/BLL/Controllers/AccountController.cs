@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Security.Claims;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -6,6 +7,7 @@ using Internship.BLL.Services.IServices;
 using Internship.DAL.Models.Request.Users;
 using Internship.DAL.Models.Response.Roles;
 using Internship.DAL.Models.Response.Users;
+using Microsoft.EntityFrameworkCore;
 
 namespace Internship.BLL.Controllers
 {
@@ -46,12 +48,24 @@ namespace Internship.BLL.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginRequest model)
         {
+            var user = _mapper.Map<User>(model);
+            User signedUser = _userManager.Users.Include(x => x.Roles).FirstOrDefault(u => u.Email == user.Email);
+            var userRole = _userManager.GetRolesAsync(signedUser).Result.FirstOrDefault();
             if (ModelState.IsValid)
             {
                 var result = await _accountService.Login(model);
 
                 if (result.Succeeded)
+                {
+                    var claims = new List<Claim>()
+                    {
+                        new Claim(ClaimsIdentity.DefaultNameClaimType, user.Email),
+                        new Claim(ClaimsIdentity.DefaultRoleClaimType, userRole)
+                    };
+                    await _signInManager.SignInWithClaimsAsync(signedUser, isPersistent: false, claims);
                     return RedirectToAction("Index", "Home");
+                }
+
                 else
                 {
                     ModelState.AddModelError("", "Неправильный логин и (или) пароль");
@@ -184,9 +198,9 @@ namespace Internship.BLL.Controllers
         }
         
         /// <summary>
-        /// [Get] Метод, получения всех пользователей
+        /// [Get] Метод, получения пользователя по Id
         /// </summary>
-        [Route("Account/Get")]
+        [Route("Account/Getbyid")]
         [Authorize(Roles = "Администратор, Модератор")]
         [HttpGet]
         public async Task<IActionResult> GetAccountById(Guid id)

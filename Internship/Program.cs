@@ -53,7 +53,22 @@ namespace Internship
                 .AddTransient<IPostService, PostService>()
                 .AddTransient<ITagService, TagService>()
                 .AddTransient<IRoleService, RoleService>();
-
+            builder.Services.ConfigureApplicationCookie(options =>
+            {
+                options.AccessDeniedPath = new PathString("/Home/AccessDenied");
+            });
+            builder.Services.AddAuthentication(options => options.DefaultScheme = "Cookies")
+                .AddCookie("Cookies", options =>
+                {
+                    options.Events = new Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationEvents
+                    {
+                        OnRedirectToLogin = redirectContext =>
+                        {
+                            redirectContext.HttpContext.Response.StatusCode = 401;
+                            return Task.CompletedTask;
+                        }
+                    };
+                });
             // Start WebApplication
             var app = builder.Build();
 

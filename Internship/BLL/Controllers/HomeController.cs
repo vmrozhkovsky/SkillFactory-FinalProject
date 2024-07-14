@@ -62,5 +62,11 @@ namespace Internship.BLL.Controllers
             }
             return View("500");
         }
+        [Route("Home/AccessDenied")]
+        [HttpGet]
+        public IActionResult AccessDenied()
+        {
+            return View("AccessDenied");
+        }
     }
 }

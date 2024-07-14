@@ -22,9 +22,9 @@ namespace Internship.BLL.Services
 
         public async Task AddTestUsers()
         {
-            var testUser = new RegisterRequest { UserName = "Test", Email = "Test@gmail.com", Password = "1234aB", FirstName = "Test", LastName = "Testov" };
-            var testUser2 = new RegisterRequest { UserName = "Test2", Email = "Test2@gmail.com", Password = "12342aB", FirstName = "Test2", LastName = "Testov2" };
-            var testUser3 = new RegisterRequest { UserName = "Test3", Email = "Test3@gmail.com", Password = "12343aB",  FirstName = "Test3", LastName = "Testov3" };
+            var testUser = new RegisterRequest { UserName = "User", Email = "Test@gmail.com", Password = "123456", FirstName = "Test", LastName = "Testov" };
+            var testUser2 = new RegisterRequest { UserName = "Moderator", Email = "Test2@gmail.com", Password = "123456", FirstName = "Test2", LastName = "Testov2" };
+            var testUser3 = new RegisterRequest { UserName = "Admin", Email = "Test3@gmail.com", Password = "123456",  FirstName = "Test3", LastName = "Testov3" };
 
             var user = _mapper.Map<User>(testUser);
             var user1 = _mapper.Map<User>(testUser2);

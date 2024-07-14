@@ -25,6 +25,7 @@ namespace Internship.BLL
             CreateMap<TagCreateRequest, Tag>();
             CreateMap<TagEditRequest, Tag>();
             CreateMap<UserEditRequest, User>();
+            CreateMap<LoginRequest, User>();
         }
     }
 }

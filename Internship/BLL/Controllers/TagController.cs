@@ -127,7 +127,7 @@ namespace Internship.BLL.Controllers
         /// <summary>
         /// [Get] Метод, получения тега по его id
         /// </summary>
-        [Route("Comment/Get")]
+        [Route("Comment/Getbyid")]
         [Authorize(Roles = "Администратор, Модератор")]
         [HttpGet]
         public async Task<IActionResult> GetCommentById(Guid id)
