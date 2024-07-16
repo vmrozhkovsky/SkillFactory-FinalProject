@@ -16,14 +16,16 @@ namespace Internship.BLL.Controllers
         private readonly ITagRepository _tagRepo;
         private readonly UserManager<User> _userManager;
         private IMapper _mapper;
+        private readonly ILogger<PostController> _logger;
 
-        public PostController(ITagRepository tagRepository, IPostRepository repo, IMapper mapper, IPostService postService, UserManager<User> userManager)
+        public PostController(ITagRepository tagRepository, IPostRepository repo, IMapper mapper, IPostService postService, UserManager<User> userManager, ILogger<PostController> logger)
         {
             _tagRepo = tagRepository;
             _repo = repo;
             _mapper = mapper;
             _postService = postService;
             _userManager = userManager;
+            _logger = logger;
         }
 
         /// <summary>
@@ -68,6 +70,7 @@ namespace Internship.BLL.Controllers
             }
 
             var postId = await _postService.CreatePost(model);
+            _logger.LogInformation($"Пользователь {user.Id} добавил статью {model.Id}.");
             return RedirectToAction("Index", "Home");
         }
 
@@ -98,6 +101,7 @@ namespace Internship.BLL.Controllers
             }
 
             await _postService.EditPost(model, Id);
+            _logger.LogInformation($"Пользователь изменил статью {Id}.");
             return RedirectToAction("Index", "Home");
         }
 
@@ -121,6 +125,7 @@ namespace Internship.BLL.Controllers
         public async Task<IActionResult> RemovePost(Guid id)
         {
             await _postService.RemovePost(id);
+            _logger.LogInformation($"Пользователь удалил статью {id}.");
             return RedirectToAction("Index", "Home");
         }
 
@@ -132,7 +137,7 @@ namespace Internship.BLL.Controllers
         public async Task<IActionResult> GetPosts()
         {
             var posts = await _postService.GetPosts();
-
+            _logger.LogInformation("Запрос на получение всех статей обработан.");
             return View(posts);
         }
     }

@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Internship.BLL.Services.IServices;
 using Internship.DAL.Models.Request.Comments;
-using Internship.DAL.Models.Response.Comments;
 using Internship.DAL.Models.Response.Users;
 using Internship.DAL.Repositories.IRepositories;
 
@@ -16,13 +15,15 @@ namespace Internship.BLL.Controllers
         private ICommentRepository _commentRepo;
         private ICommentService _commentService;
         private readonly UserManager<User> _userManager;
+        private readonly ILogger<CommentController> _logger;
 
-        public CommentController(IMapper mapper, ICommentRepository commentRepo, ICommentService commentService, UserManager<User> userManager)
+        public CommentController(IMapper mapper, ICommentRepository commentRepo, ICommentService commentService, UserManager<User> userManager, ILogger<CommentController> logger)
         {
             _mapper = mapper;
             _commentRepo = commentRepo;
             _commentService = commentService;
             _userManager = userManager;
+            _logger = logger;
         }
 
         // <summary>
@@ -46,6 +47,7 @@ namespace Internship.BLL.Controllers
             model.PostId = PostId;
             var user = await _userManager.FindByNameAsync(User.Identity.Name);
             var post = _commentService.CreateComment(model, new Guid(user.Id));
+            _logger.LogInformation($"Пользователем {user.Id} добавлен комментарий к статье {model.PostId}.");
             return RedirectToAction("Index", "Home");
         }
 
@@ -71,11 +73,13 @@ namespace Internship.BLL.Controllers
             if (ModelState.IsValid)
             {
                 await _commentService.EditComment(model);
+                _logger.LogInformation($"Внесены изменения в комментарий {model.Id}.");
                 return RedirectToAction("Index", "Home");
             }
             else
             {
                 ModelState.AddModelError("", "Некорректные данные");
+                _logger.LogWarning($"Возникла ошибка при изменении комментария {model.Id}");
                 return View(model);
             }
         }
@@ -100,6 +104,7 @@ namespace Internship.BLL.Controllers
         public async Task<IActionResult> RemoveComment(Guid id)
         {
             await _commentService.RemoveComment(id);
+            _logger.LogInformation($"Удален комментарий {id}.");
             return RedirectToAction("Index", "Home");
         }
         
@@ -112,7 +117,7 @@ namespace Internship.BLL.Controllers
         public async Task<IActionResult> GetComments()
         {
             var comments = await _commentService.GetComments();
-
+            _logger.LogInformation($"Запрос на вывод всех комментариев обработан.");
             return View(comments);
         }
         
@@ -125,7 +130,7 @@ namespace Internship.BLL.Controllers
         public async Task<IActionResult> GetCommentById(Guid id)
         {
             var comment = await _commentService.GetCommentById(id);
-
+            _logger.LogInformation($"Запрос на вывод комментариея {id} обработан.");
             return View(comment);
         }
     }

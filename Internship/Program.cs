@@ -8,6 +8,8 @@ using Internship.DAL.Models.Response.Roles;
 using Internship.DAL.Models.Response.Users;
 using Internship.DAL.Repositories;
 using Internship.DAL.Repositories.IRepositories;
+using Internship.Middleware;
+using NLog.Web;
 
 namespace Internship
 {
@@ -53,6 +55,7 @@ namespace Internship
                 .AddTransient<IPostService, PostService>()
                 .AddTransient<ITagService, TagService>()
                 .AddTransient<IRoleService, RoleService>();
+            
             builder.Services.ConfigureApplicationCookie(options =>
             {
                 options.AccessDeniedPath = new PathString("/Home/AccessDenied");
@@ -69,6 +72,13 @@ namespace Internship
                         }
                     };
                 });
+            
+            builder.Logging
+                .ClearProviders()
+                .SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace)
+                .AddConsole()
+                .AddNLog("Nlog");
+            
             // Start WebApplication
             var app = builder.Build();
 
@@ -77,7 +87,7 @@ namespace Internship
                 app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
-
+            app.UseMiddleware<ExceptionHandlingMiddleware>();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 

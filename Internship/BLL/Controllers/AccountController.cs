@@ -63,11 +63,13 @@ namespace Internship.BLL.Controllers
                         new Claim(ClaimsIdentity.DefaultRoleClaimType, userRole)
                     };
                     await _signInManager.SignInWithClaimsAsync(signedUser, isPersistent: false, claims);
+                    _logger.LogDebug($"Пользователь {signedUser.UserName} залогинен с email {signedUser.Email} и ролью {userRole}.");
                     return RedirectToAction("Index", "Home");
                 }
 
                 else
                 {
+                    _logger.LogWarning("Произошла ошибка входа");
                     ModelState.AddModelError("", "Неправильный логин и (или) пароль");
                 }
             }
@@ -97,13 +99,14 @@ namespace Internship.BLL.Controllers
 
                 if (result.Succeeded)
                 {
-                    _logger.LogInformation($"Создан аккаунт - {model.Email}");
+                    _logger.LogDebug($"Создан аккаунт - {model.Email}");
                     return RedirectToAction("Index", "Home");
                 }
                 else
                 {
                     foreach (var error in result.Errors)
                     {
+                        _logger.LogWarning($"Произошла ошибка регистрации - {error.Description}");
                         ModelState.AddModelError(string.Empty, error.Description);
                     }
                 }
@@ -140,6 +143,7 @@ namespace Internship.BLL.Controllers
             }    
             else
             {
+                _logger.LogWarning($"Произошла ошибка изменения аккаунта - {result.Errors.First().Description}");
                 ModelState.AddModelError("", $"{result.Errors.First().Description}");
                 return View(model);
             }
@@ -167,7 +171,7 @@ namespace Internship.BLL.Controllers
         public async Task<IActionResult> RemoveAccount(Guid id)
         {
             await _accountService.RemoveAccount(id);
-            _logger.LogDebug($"Remove account {id}");
+            _logger.LogDebug($"Аккаунт с {id} удален.");
 
             return RedirectToAction("Index", "Home");
         }
@@ -181,6 +185,7 @@ namespace Internship.BLL.Controllers
         public async Task<IActionResult> LogoutAccount(Guid id)
         {
             await _accountService.LogoutAccount();
+            _logger.LogDebug($"Пользователь с {id} вышел из системы.");
             return RedirectToAction("Index", "Home");
         }
 
@@ -193,7 +198,7 @@ namespace Internship.BLL.Controllers
         public async Task<IActionResult> GetAccounts()
         {
             var users = await _accountService.GetAccounts();
-
+            _logger.LogDebug($"Запрос вывода всех пользователей обработан");
             return View(users);
         }
         

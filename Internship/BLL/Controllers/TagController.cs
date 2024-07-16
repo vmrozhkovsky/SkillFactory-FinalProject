@@ -49,6 +49,7 @@ namespace Internship.BLL.Controllers
             else
             {
                 ModelState.AddModelError("", "Неверные данные!");
+                _logger.LogWarning($"Возникла ошибка при создании тега {model.Name}.");
                 return View(model);
             }
         }
@@ -82,6 +83,7 @@ namespace Internship.BLL.Controllers
             else
             {
                 ModelState.AddModelError("", "Неверные данные!");
+                _logger.LogWarning($"Возникла ошибка при изменении тега {model.Name}.");
                 return View(model);
             }
         }
@@ -133,7 +135,7 @@ namespace Internship.BLL.Controllers
         public async Task<IActionResult> GetCommentById(Guid id)
         {
             var tag = await _tagService.GetTagById(id);
-
+            _logger.LogInformation("Запрос на вывод всех тегов обработан.");
             return View(tag);
         }
     }

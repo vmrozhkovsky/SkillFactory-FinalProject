@@ -66,6 +66,7 @@ namespace Internship.BLL.Controllers
         [HttpGet]
         public IActionResult AccessDenied()
         {
+            _logger.LogWarning($"Произошла ошибка - доступ запрещен!");
             return View("AccessDenied");
         }
     }

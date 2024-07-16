@@ -3,9 +3,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Internship.BLL.Services.IServices;
 using Internship.DAL.Models.Request.Roles;
-using Internship.DAL.Models.Request.Tags;
-using Internship.DAL.Models.Response.Tags;
-using Internship.DAL.Repositories.IRepositories;
 
 namespace Internship.BLL.Controllers
 {
@@ -43,12 +40,13 @@ namespace Internship.BLL.Controllers
             if (ModelState.IsValid)
             {
                 var roleId = await _roleService.CreateRole(model);
-                _logger.LogInformation($"Созданна роль - {model.Name}");
+                _logger.LogDebug($"Создана роль - {model.Name}");
                 return RedirectToAction("Index", "Home");
             }
             else
             {
                 ModelState.AddModelError("", "Некорректные данные");
+                _logger.LogWarning($"Возникла ошибка при создании роли {model.Name}.");
                 return View(model);
             }
         }
@@ -76,12 +74,13 @@ namespace Internship.BLL.Controllers
             if (ModelState.IsValid)
             {
                 await _roleService.EditRole(model);
-                _logger.LogDebug($"Измененна роль - {model.Name}");
+                _logger.LogDebug($"Изменена роль - {model.Name}");
                 return RedirectToAction("Index", "Home");
             }
             else
             {
                 ModelState.AddModelError("", "Некорректные данные");
+                _logger.LogWarning($"Возникла ошибка при редактировании роли {model.Name}.");
                 return View(model);
             }
         }
@@ -108,7 +107,7 @@ namespace Internship.BLL.Controllers
         public async Task<IActionResult> RemoveRole(Guid id)
         {
             await _roleService.RemoveRole(id);
-            _logger.LogDebug($"Удаленна роль - {id}");
+            _logger.LogDebug($"Удалена роль - {id}");
             return RedirectToAction("Index", "Home");
         }
 
@@ -121,6 +120,7 @@ namespace Internship.BLL.Controllers
         public async Task<IActionResult> GetRoles()
         {
             var roles = await _roleService.GetRoles();
+            _logger.LogInformation("Запрос на вывод всех ролей обработан.");
             return View(roles);
         }
     }

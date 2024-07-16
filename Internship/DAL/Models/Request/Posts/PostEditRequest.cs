@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Internship.DAL.Models.Request.Tags;
-using Internship.DAL.Models.Response.Tags;
 
 namespace Internship.DAL.Models.Request.Posts
 {
